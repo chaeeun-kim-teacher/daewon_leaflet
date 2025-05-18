@@ -3,9 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEST</title>
-    </head>
+    <title>대원고 리플렛</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <style>
+        body {
+            background: #fff; /* 배경색은 흰색 유지 */
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #333; /* 기본 글자색 약간 어둡게 */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* 최소 화면 높이로 설정하여 중앙 정렬 용이하게 */
+        }
+
+        .swiper-container {
+            width: 100%; /* 전체 너비 사용 */
+            padding-bottom: 60px; /* 하단 여백 (페이지네이션, 진행바 공간 확보) */
+            overflow: hidden; /* 자식 요소가 넘치는 것을 숨김 */
+        }
+
+        .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            /* 세로 모양 페이지를 위한 너비 설정 (Coverflow에서는 보통 %보다 px이 예측 가능) */
+            /* 또는 slidesPerView: 'auto' 와 함께 % 사용 */
+            width: 95%; /* 슬라이드 너비, 가로 Coverflow에 맞게 조절 */
+            /* height: 90%; /* 슬라이드 높이를 컨테이너에 거의 꽉 차게 */
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 이미지가 슬라이드 영역을 채우도록 */
+            border-radius: 8px; /* 이미지 모서리 약간 둥글게 (선택 사항) */
+        }
+
+        /* 페이지네이션 색상 및 위치 */
+        .swiper-pagination {
+            bottom: 20px !important; /* 중요! Swiper 기본값보다 우선 적용 */
+        }
+
+        .swiper-pagination-bullet {
+            background: #888888; /* 페이지네이션 점 색상 (회색) */
+            opacity: 0.5;
+        }
+        .swiper-pagination-bullet-active {
+            background: #555555; /* 활성 페이지네이션 점 색상 (진한 회색) */
+            opacity: 1;
+        }
+
+
+        /* 자동 재생 진행률 표시 스타일 */
+        .autoplay-progress {
+            position: absolute;
+            right: 10px; /* 우측 여백 */
+            bottom: 10px; /* 하단 여백 (페이지네이션과 동일 선상에 가깝게) */
+            z-index: 10;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #555555; /* 진행률 텍스트 색상 (진한 회색) */
+        }
+
+        .autoplay-progress svg {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke-width: 4px;
+            stroke: #888888; /* 진행률 원 테두리 색상 (회색) */
+            transform: rotate(-90deg);
+        }
+        .autoplay-progress svg circle {
+            stroke-dasharray: 125.66; /* 2 * PI * 20 (반지름) */
+            stroke-dashoffset: 125.66; /* 초기에는 채워지지 않음 */
+        }
+
+    </style>
+</head>
 <body>
-    TEST
+
+<div class="swiper-container mySwiper">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="./img-1.jpg" alt="이미지 1"></div>
+        <div class="swiper-slide"><img src="./img-2.jpg" alt="이미지 2"></div>
+        <div class="swiper-slide"><img src="./img-3.jpg" alt="이미지 3"></div>
+        <div class="swiper-slide"><img src="./img-4.jpg" alt="이미지 4"></div>
+        <div class="swiper-slide"><img src="./img-5.jpg" alt="이미지 5"></div>
+        <div class="swiper-slide"><img src="./img-6.jpg" alt="이미지 6"></div>
+    </div>
+    <div class="swiper-pagination"></div>
+
+    <div class="autoplay-progress">
+        <svg viewBox="0 0 48 48">
+            <circle cx="24" cy="24" r="20"></circle>
+        </svg>
+        <span></span> </div>
+</div>
+
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    const progressCircle = document.querySelector(".autoplay-progress svg circle");
+    // const progressContent = document.querySelector(".autoplay-progress span"); // 필요시 사용
+
+    const swiper = new Swiper(".mySwiper", {
+        effect: "coverflow",
+        grabCursor: true,
+        centeredSlides: true,
+        slidesPerView: "auto", // 'auto' 또는 특정 숫자 (예: 2 또는 3)
+        direction: "horizontal", // 가로 방향으로 슬라이드
+        coverflowEffect: {
+            rotate: 30,       // 슬라이드 회전 각도 (조절 가능)
+            stretch: 0,       // 슬라이드 간 간격 (0이면 붙음, 양수면 늘어남)
+            depth: 150,       // 슬라이드 깊이 효과 (조절 가능)
+            modifier: 1,      // 효과 배수
+            slideShadows: true, // 슬라이드 그림자 표시 여부
+        },
+        loop: true, // 무한 루프 (선택 사항)
+        autoplay: {
+            delay: 2000, // 자동 재생 딜레이 (ms)
+            disableOnInteraction: true, // 사용자 상호작용 후 자동 재생 비활성화 여부
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            dynamicBullets: true, // 동적 페이지네이션
+            clickable: true,
+        },
+        on: {
+            autoplayTimeLeft(s, time, progress) {
+                // progress 값은 0 (시작) 에서 1 (끝)로 증가합니다.
+                // stroke-dashoffset은 전체 길이(125.66)에서 그려질 길이(125.66 * progress)를 뺀 값입니다.
+                const offset = 125.66 * (1 - progress);
+                progressCircle.style.strokeDashoffset = offset;
+                // progressContent.textContent = `${Math.ceil(time / 1000)}s`; // 필요시 남은 시간 표시
+            }
+        }
+    });
+</script>
 </body>
 </html>
